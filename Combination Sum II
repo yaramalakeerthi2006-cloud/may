@@ -1,0 +1,26 @@
+from typing import List
+
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        def generate(start, curr_subset, target):
+            if target == 0:
+                ans.append(curr_subset[:])
+                return
+            
+            for i in range(start, len(candidates)):
+                
+                if i > start and candidates[i] == candidates[i - 1]:
+                    continue
+                
+                
+                if candidates[i] > target:
+                    break
+                
+                curr_subset.append(candidates[i])
+                generate(i + 1, curr_subset, target - candidates[i])
+                curr_subset.pop()
+        
+        candidates.sort()
+        ans = []
+        generate(0, [], target)
+        return ans
