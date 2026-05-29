@@ -1,0 +1,60 @@
+from collections import deque
+
+class Solution:
+    def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
+
+        # Build parent pointers
+        def getParent(root):
+            q = deque([root])
+            parent = {}
+            while q:
+                node = q.popleft()
+                if node.left:
+                    parent[node.left] = node
+                    q.append(node.left)
+                if node.right:
+                    parent[node.right] = node
+                    q.append(node.right)
+            return parent
+
+        # Find the node with value = start
+        def findStart(root, start):
+            q = deque([root])
+            while q:
+                node = q.popleft()
+                if node.val == start:
+                    return node
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            return None
+
+        parent = getParent(root)
+        startNode = findStart(root, start)
+
+        # BFS infection
+        q = deque([startNode])
+        visited = {startNode}
+        minutes = 0
+
+        while q:
+            for _ in range(len(q)):
+                node = q.popleft()
+
+                if node.left and node.left not in visited:
+                    visited.add(node.left)
+                    q.append(node.left)
+
+                if node.right and node.right not in visited:
+                    visited.add(node.right)
+                    q.append(node.right)
+
+                if node in parent and parent[node] not in visited:
+                    visited.add(parent[node])
+                    q.append(parent[node])
+
+            if q:
+                minutes += 1
+
+        return minutes
