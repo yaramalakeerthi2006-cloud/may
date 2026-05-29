@@ -1,0 +1,45 @@
+class Solution:
+    def searchRange(self, arr, target):
+        
+        def lower_bound(arr, target):
+            low, high = 0, len(arr) - 1
+            ans = len(arr)
+            
+            while low <= high:
+                mid = (low + high) // 2
+                
+                if arr[mid] >= target:
+                    ans = mid
+                    high = mid - 1
+                else:
+                    low = mid + 1
+                    
+            return ans
+        
+        def upper_bound(arr, target):
+            low, high = 0, len(arr) - 1
+            ans = len(arr)
+            
+            while low <= high:
+                mid = (low + high) // 2
+                
+                if arr[mid] > target:
+                    ans = mid
+                    high = mid - 1
+                else:
+                    low = mid + 1
+                    
+            return ans
+        
+        if len(arr) == 0:
+            return [-1, -1]
+        
+        first = lower_bound(arr, target)
+        
+        # target not found
+        if first == len(arr) or arr[first] != target:
+            return [-1, -1]
+        
+        last = upper_bound(arr, target) - 1
+        
+        return [first, last]
