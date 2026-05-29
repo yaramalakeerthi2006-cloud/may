@@ -1,0 +1,30 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        def dfs(i,j,vis,board,n,m):
+            for r,c in [[-1,0],[1,0],[0,-1],[0,1]]:
+                nr = r+i
+                nc = c+j
+                if(nr>=0 and nr<n and nc>=0 and nc<m and board[nr][nc] == 'O' and vis[nr][nc] == 0):
+                    vis[nr][nc] = 1
+                    dfs(nr,nc,vis,board,n,m)
+        n = len(board)
+        m = len(board[0])
+        vis = []
+        for i in range(n):
+            lst = [0]*m
+            vis.append(lst)
+        for i in range(n):
+            for j in range(m):
+                if((i == 0 or i == n-1 or j == 0 or j == m-1) and board[i][j] == 'O' and vis[i][j] == 0):
+                    vis[i][j] = 1
+                    dfs(i,j,vis,board,n,m)
+        for i in range(n):
+            for j in range(m):
+                if(board[i][j] == 'O' and vis[i][j] == 0):
+                    board[i][j] = 'X'
+        return board
+        
+        
